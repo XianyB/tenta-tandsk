@@ -6,39 +6,107 @@
 <title>Flashcards – Tentaplugg</title>
 
 <style>
-*{box-sizing:border-box}
+/* =========================================================
+   CLEAN DARK + ORANGE THEME
+========================================================= */
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
 
 body{
     margin:0;
     font-family:Arial,sans-serif;
-    background:#f3f5f9;
-    color:#1f2937;
+    background:#0b0d10;
+    color:#f3f4f6;
 }
 
+/* =========================================================
+   HEADER
+========================================================= */
+
 header{
-    background:#1d4ed8;
-    color:white;
-    padding:24px;
+    background:#11151a;
+    color:#ffffff;
+    padding:28px 24px;
     text-align:center;
+    border-bottom:1px solid #252a31;
+    box-shadow:0 4px 20px rgba(0,0,0,.35);
 }
 
 header h1{
     margin:0 0 8px;
+    font-size:30px;
+    letter-spacing:-.4px;
 }
 
 .sub{
-    opacity:.9;
+    color:#9ca3af;
+    opacity:1;
 }
+
+/* =========================================================
+   MAIN
+========================================================= */
 
 main{
     max-width:900px;
-    margin:28px auto;
+    margin:30px auto;
     padding:0 18px;
 }
 
-.categories{
+/* =========================================================
+   MODE – FLASHCARDS / QUIZ
+========================================================= */
+
+.mode-buttons{
     display:flex;
     gap:10px;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+}
+
+.mode-btn{
+    background:#15191e;
+    color:#9ca3af;
+    border:1px solid #2a3038;
+    border-radius:10px;
+    padding:12px 18px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:15px;
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .15s ease;
+}
+
+.mode-btn:hover{
+    background:#1b2026;
+    color:#ffffff;
+    border-color:#3a414b;
+    filter:none;
+}
+
+.mode-btn.active{
+    background:#f97316;
+    color:#111111;
+    border-color:#f97316;
+    box-shadow:0 4px 14px rgba(249,115,22,.22);
+}
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+.categories{
+    display:flex;
+    gap:9px;
     flex-wrap:wrap;
     margin-bottom:22px;
 }
@@ -50,34 +118,63 @@ button{
     font-weight:700;
     cursor:pointer;
     font-size:15px;
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .15s ease,
+        box-shadow .2s ease;
 }
 
 button:hover{
-    filter:brightness(.96);
+    filter:none;
+    transform:translateY(-1px);
+}
+
+button:active{
+    transform:translateY(0);
 }
 
 .cat{
-    background:white;
-    color:#334155;
-    border:1px solid #dbe1ea;
+    background:#15191e;
+    color:#cbd5e1;
+    border:1px solid #2a3038;
+}
+
+.cat:hover{
+    background:#1b2026;
+    color:#ffffff;
+    border-color:#3a414b;
 }
 
 .cat.active{
-    background:#2563eb;
-    color:white;
+    background:#f97316;
+    color:#111111;
+    border-color:#f97316;
+    box-shadow:0 4px 14px rgba(249,115,22,.18);
 }
+
+/* =========================================================
+   STATS
+========================================================= */
 
 .stats{
     display:flex;
     justify-content:space-between;
     gap:12px;
-    background:white;
+    background:#15191e;
     padding:14px 18px;
     border-radius:12px;
     margin-bottom:18px;
-    box-shadow:0 2px 8px #00000010;
+    border:1px solid #252a31;
+    box-shadow:0 6px 20px rgba(0,0,0,.22);
     flex-wrap:wrap;
+    color:#d1d5db;
 }
+
+/* =========================================================
+   FLASHCARD
+========================================================= */
 
 .card-wrap{
     perspective:1200px;
@@ -101,7 +198,8 @@ button:hover{
     position:absolute;
     inset:0;
     backface-visibility:hidden;
-    background:white;
+    background:#15191e;
+    border:1px solid #292f37;
     border-radius:20px;
     padding:35px;
     display:flex;
@@ -109,12 +207,15 @@ button:hover{
     align-items:center;
     justify-content:center;
     text-align:center;
-    box-shadow:0 10px 30px #00000016;
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.32),
+        0 0 0 1px rgba(255,255,255,.015);
 }
 
 .back{
     transform:rotateY(180deg);
-    background:#eff6ff;
+    background:#171b20;
+    border-color:#313842;
 }
 
 .label{
@@ -123,26 +224,34 @@ button:hover{
     left:22px;
     font-size:13px;
     font-weight:bold;
-    color:#64748b;
+    color:#f97316;
+    letter-spacing:.3px;
 }
 
 .face h2{
     font-size:28px;
     max-width:760px;
+    color:#f9fafb;
+    line-height:1.35;
 }
 
 .answer{
     font-size:22px;
     line-height:1.55;
     max-width:760px;
+    color:#e5e7eb;
 }
 
 .hint{
     position:absolute;
     bottom:20px;
-    color:#64748b;
+    color:#6b7280;
     font-size:14px;
 }
+
+/* =========================================================
+   CONTROLS
+========================================================= */
 
 .controls{
     display:flex;
@@ -152,138 +261,315 @@ button:hover{
 }
 
 .prev{
-    background:#e2e8f0;
+    background:#242a32;
+    color:#e5e7eb;
+    border:1px solid #343b45;
+}
+
+.prev:hover{
+    background:#2d343e;
 }
 
 .mark{
-    background:#fef3c7;
-    color:#92400e;
+    background:#292217;
+    color:#fbbf24;
+    border:1px solid #5b451a;
+}
+
+.mark:hover{
+    background:#352a19;
 }
 
 .mark.active{
     background:#f59e0b;
-    color:#111827;
+    color:#111111;
+    border-color:#f59e0b;
+    box-shadow:0 4px 14px rgba(245,158,11,.2);
 }
 
 .remove{
-    background:#ef4444;
-    color:white;
+    background:#35191b;
+    color:#fca5a5;
+    border:1px solid #6b272c;
+}
+
+.remove:hover{
+    background:#472024;
 }
 
 .reset{
-    background:#334155;
-    color:white;
+    background:#242a32;
+    color:#cbd5e1;
+    border:1px solid #343b45;
 }
 
-.correct{
-    background:#16a34a;
-    color:white;
-    font-size:18px;
-    padding:14px 22px;
+.reset:hover{
+    background:#2d343e;
 }
 
-.wrong{
-    background:#dc2626;
-    color:white;
-    font-size:18px;
-    padding:14px 22px;
-}
-
-.answer-buttons{
-    display:flex;
-    gap:12px;
-    margin-top:28px;
-    flex-wrap:wrap;
-    justify-content:center;
-}
+/* =========================================================
+   EMPTY
+========================================================= */
 
 .empty{
-    background:white;
+    background:#15191e;
+    border:1px solid #292f37;
     border-radius:18px;
     padding:50px;
     text-align:center;
-    box-shadow:0 5px 20px #00000010;
+    box-shadow:0 10px 30px rgba(0,0,0,.28);
+    color:#cbd5e1;
 }
 
-.result{
-    background:white;
+/* =========================================================
+   QUIZ CARD
+========================================================= */
+
+.quiz-card{
+    background:#15191e;
+    border:1px solid #292f37;
+    border-radius:20px;
+    padding:35px;
+    min-height:430px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    text-align:center;
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.32),
+        0 0 0 1px rgba(255,255,255,.015);
+}
+
+.quiz-label{
+    font-size:13px;
+    font-weight:bold;
+    color:#f97316;
+    margin-bottom:20px;
+    letter-spacing:.3px;
+}
+
+.quiz-question{
+    font-size:28px;
+    line-height:1.35;
+    max-width:760px;
+    margin:0 auto 30px;
+    color:#f9fafb;
+}
+
+/* =========================================================
+   QUIZ OPTIONS
+========================================================= */
+
+.quiz-options{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    max-width:700px;
+    width:100%;
+    margin:0 auto;
+}
+
+.quiz-option{
+    width:100%;
+    background:#1b2026;
+    color:#e5e7eb;
+    border:2px solid #303740;
+    border-radius:14px;
+    padding:18px 20px;
+    font-size:18px;
+    font-weight:600;
+    text-align:left;
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .15s ease,
+        box-shadow .2s ease;
+}
+
+.quiz-option:hover:not(:disabled){
+    background:#222830;
+    border-color:#f97316;
+    color:#ffffff;
+    box-shadow:0 5px 18px rgba(249,115,22,.12);
+    transform:translateY(-1px);
+}
+
+.quiz-option:disabled{
+    cursor:default;
+    opacity:1;
+}
+
+/* =========================================================
+   QUIZ CORRECT / WRONG
+========================================================= */
+
+.quiz-option.correct-answer{
+    background:#12291d;
+    border-color:#22c55e;
+    color:#86efac;
+    box-shadow:0 5px 18px rgba(34,197,94,.12);
+}
+
+.quiz-option.wrong-answer{
+    background:#301719;
+    border-color:#ef4444;
+    color:#fca5a5;
+    box-shadow:0 5px 18px rgba(239,68,68,.12);
+}
+
+.quiz-feedback{
+    min-height:28px;
+    margin-top:22px;
+    font-size:18px;
+    font-weight:700;
+}
+
+.quiz-feedback.correct-feedback{
+    color:#4ade80;
+}
+
+.quiz-feedback.wrong-feedback{
+    color:#f87171;
+}
+
+/* =========================================================
+   NEXT BUTTON
+========================================================= */
+
+.quiz-next{
+    display:none;
+    margin:20px auto 0;
+    background:#f97316;
+    color:#111111;
+    border:1px solid #f97316;
+    box-shadow:0 5px 18px rgba(249,115,22,.18);
+}
+
+.quiz-next:hover{
+    background:#fb923c;
+}
+
+.quiz-next.show{
+    display:inline-block;
+}
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+.result,
+.quiz-result{
+    background:#15191e;
+    border:1px solid #292f37;
     border-radius:20px;
     padding:30px;
-    box-shadow:0 10px 30px #00000012;
+    box-shadow:0 15px 40px rgba(0,0,0,.3);
+    color:#e5e7eb;
 }
 
-.result h2{
+.result h2,
+.quiz-result h2{
     margin-top:0;
     text-align:center;
+    color:#f9fafb;
 }
 
-.result-score{
+.result-score,
+.quiz-score{
     text-align:center;
-    font-size:30px;
+    font-size:34px;
     font-weight:800;
     margin:20px 0;
+    color:#f97316;
 }
 
-.result-stats{
+.result-stats,
+.quiz-result-stats{
     display:flex;
     justify-content:center;
-    gap:15px;
+    gap:12px;
     flex-wrap:wrap;
     margin-bottom:25px;
 }
 
-.result-stat{
+.result-stat,
+.quiz-result-stat{
     padding:14px 20px;
     border-radius:12px;
     font-weight:700;
+    border:1px solid transparent;
 }
 
-.result-right{
-    background:#dcfce7;
-    color:#166534;
+.result-right,
+.quiz-right{
+    background:#12291d;
+    color:#86efac;
+    border-color:#245d3a;
 }
 
-.result-wrong{
-    background:#fee2e2;
-    color:#991b1b;
+.result-wrong,
+.quiz-wrong{
+    background:#301719;
+    color:#fca5a5;
+    border-color:#6b292d;
 }
 
-.result-total{
-    background:#e0e7ff;
-    color:#3730a3;
+.result-total,
+.quiz-total{
+    background:#1e2228;
+    color:#d1d5db;
+    border-color:#353b44;
 }
 
-.result-section{
+/* =========================================================
+   RESULT SECTIONS
+========================================================= */
+
+.result-section,
+.quiz-result-section{
     margin-top:28px;
 }
 
-.result-section h3{
+.result-section h3,
+.quiz-result-section h3{
     margin-bottom:12px;
+    color:#f3f4f6;
 }
 
-.result-item{
-    background:#f8fafc;
-    border-left:5px solid #16a34a;
+.result-item,
+.quiz-result-item{
+    background:#1b2026;
+    border:1px solid #2c333c;
+    border-left:5px solid #22c55e;
     border-radius:10px;
     padding:14px;
     margin-bottom:10px;
 }
 
-.result-item.wrong-item{
-    border-left-color:#dc2626;
+.result-item.wrong-item,
+.quiz-result-item.wrong-item{
+    border-left-color:#ef4444;
 }
 
-.result-question{
+.result-question,
+.quiz-result-question{
     font-weight:700;
     margin-bottom:8px;
+    color:#f3f4f6;
 }
 
-.result-answer{
-    color:#475569;
+.result-answer,
+.quiz-result-answer{
+    color:#aeb6c2;
     line-height:1.5;
 }
 
-.result-actions{
+/* =========================================================
+   RESULT ACTIONS
+========================================================= */
+
+.result-actions,
+.quiz-result-actions{
     display:flex;
     gap:10px;
     flex-wrap:wrap;
@@ -291,33 +577,113 @@ button:hover{
     margin-top:30px;
 }
 
-.result-actions button{
+.result-actions button,
+.quiz-result-actions button{
     font-size:16px;
 }
 
-.repeat{
-    background:#2563eb;
-    color:white;
+.repeat,
+.quiz-repeat{
+    background:#f97316;
+    color:#111111;
 }
 
-.shuffle{
-    background:#7c3aed;
-    color:white;
+.repeat:hover,
+.quiz-repeat:hover{
+    background:#fb923c;
 }
 
-.train-wrong{
-    background:#dc2626;
-    color:white;
+.shuffle,
+.quiz-shuffle{
+    background:#252b33;
+    color:#dbeafe;
+    border:1px solid #39414b;
 }
 
-.train-marked{
-    background:#f59e0b;
-    color:#111827;
+.shuffle:hover,
+.quiz-shuffle:hover{
+    background:#303842;
 }
+
+.train-wrong,
+.quiz-train-wrong{
+    background:#35191b;
+    color:#fca5a5;
+    border:1px solid #6b272c;
+}
+
+.train-wrong:hover,
+.quiz-train-wrong:hover{
+    background:#472024;
+}
+
+.train-marked,
+.quiz-train-marked{
+    background:#3a2b13;
+    color:#fbbf24;
+    border:1px solid #71541c;
+}
+
+.train-marked:hover,
+.quiz-train-marked:hover{
+    background:#493716;
+}
+
+/* =========================================================
+   GENERAL TEXT / SELECTION
+========================================================= */
+
+::selection{
+    background:#f97316;
+    color:#111111;
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+    background:#0b0d10;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#303740;
+    border-radius:10px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#454e59;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media(max-width:600px){
+
+    header{
+        padding:22px 16px;
+    }
+
+    header h1{
+        font-size:25px;
+    }
+
+    main{
+        margin:22px auto;
+        padding:0 12px;
+    }
+
     .card-wrap{
         height:500px;
+    }
+
+    .face{
+        padding:24px;
     }
 
     .face h2{
@@ -334,10 +700,39 @@ button:hover{
 
     .stats{
         font-size:14px;
+        padding:13px 15px;
     }
 
-    .result{
+    .result,
+    .quiz-result{
         padding:20px;
+    }
+
+    .quiz-card{
+        padding:22px;
+        min-height:500px;
+    }
+
+    .quiz-question{
+        font-size:23px;
+    }
+
+    .quiz-option{
+        font-size:16px;
+        padding:16px;
+    }
+
+    .mode-btn{
+        flex:1;
+    }
+
+    .categories{
+        gap:7px;
+    }
+
+    .cat{
+        padding:10px 13px;
+        font-size:14px;
     }
 }
 </style>
@@ -351,6 +746,24 @@ button:hover{
 </header>
 
 <main>
+
+<div class="mode-buttons">
+
+    <button
+        id="flashcardModeBtn"
+        class="mode-btn active"
+        type="button">
+        🧠 Flashcards
+    </button>
+
+    <button
+        id="quizModeBtn"
+        class="mode-btn"
+        type="button">
+        📝 Quiz
+    </button>
+
+</div>
 
 <div id="categories" class="categories"></div>
 
@@ -2811,6 +3224,8 @@ function startRound(list){
 
     roundStarted = true;
 
+    controls.style.display = "";
+
     render();
 
 }
@@ -3135,27 +3550,502 @@ function showResults(list){
 
 
 /* =========================
+   QUIZ – DATA OCH FUNKTIONER
+========================= */
+
+let currentMode = "flashcards";
+let quizIndex = 0;
+let quizList = null;
+let quizResults = {};
+let quizAnswered = false;
+
+const flashcardModeBtn =
+    document.getElementById("flashcardModeBtn");
+
+const quizModeBtn =
+    document.getElementById("quizModeBtn");
+
+function getQuizCategories(){
+
+    return [
+        "Alla",
+        "⭐ Markerade",
+        ...new Set(cards.map(card => card[0]))
+    ];
+
+}
+
+function getQuizCards(){
+
+    let list = cards
+        .map((card,originalIndex)=>({
+            card,
+            originalIndex
+        }))
+        .filter(item => {
+
+            if(removed.includes(item.originalIndex)){
+                return false;
+            }
+
+            if(activeCategory === "⭐ Markerade"){
+                return isMarked(item.originalIndex);
+            }
+
+            if(activeCategory === "Alla"){
+                return item.card[0] !== "Endast frågor från Worddokument";
+            }
+
+            return item.card[0] === activeCategory;
+
+        });
+
+    if(quizList !== null){
+
+        const allowed = new Set(quizList);
+
+        list = list.filter(item => allowed.has(item.originalIndex));
+
+    }
+
+    return list;
+
+}
+
+function renderQuizCategories(){
+
+    categoriesElement.innerHTML = "";
+
+    getQuizCategories().forEach(category => {
+
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className = "cat" + (category === activeCategory ? " active" : "");
+        button.textContent = category;
+
+        button.addEventListener("click",()=>{
+
+            activeCategory = category;
+            quizList = null;
+            quizIndex = 0;
+            quizResults = {};
+            quizAnswered = false;
+            controls.style.display = "";
+
+            renderQuizCategories();
+            renderQuiz();
+
+        });
+
+        categoriesElement.appendChild(button);
+
+    });
+
+}
+
+function getQuizWrongAnswer(currentItem,list){
+
+    const candidates = shuffleArray(
+        list.filter(item =>
+            item.originalIndex !== currentItem.originalIndex &&
+            item.card[2] !== currentItem.card[2]
+        )
+    );
+
+    if(candidates.length){
+        return candidates[0].card[2];
+    }
+
+    return "Detta påstående är inte korrekt.";
+
+}
+
+function renderQuiz(){
+
+    const list = getQuizCards();
+
+    if(!list.length){
+
+        app.innerHTML = `
+            <div class="empty">
+                <h2>
+                    ${activeCategory === "⭐ Markerade" ? "Inga markerade frågor ⭐" : "Inga frågor kvar 🎉"}
+                </h2>
+                <p>Välj en annan kategori eller återställ borttagna frågor.</p>
+            </div>
+        `;
+
+        progress.textContent = "Klart!";
+        remaining.textContent = "0 frågor kvar";
+        return;
+
+    }
+
+    if(quizIndex >= list.length){
+        showQuizResults(list);
+        return;
+    }
+
+    const item = list[quizIndex];
+    const correctAnswer = item.card[2];
+    const wrongAnswer = getQuizWrongAnswer(item,list);
+
+    const answers = shuffleArray([
+        {text: correctAnswer, correct:true},
+        {text: wrongAnswer, correct:false}
+    ]);
+
+    quizAnswered = false;
+
+    app.innerHTML = `
+        <div class="quiz-card">
+            <div class="quiz-label">
+                ${escapeHtml(item.card[0])}
+            </div>
+
+            <h2 class="quiz-question">
+                ${escapeHtml(item.card[1])}
+            </h2>
+
+            <div class="quiz-options">
+                ${answers.map(answer => `
+                    <button
+                        class="quiz-option"
+                        data-correct="${answer.correct}"
+                        type="button">
+                        ${escapeHtml(answer.text)}
+                    </button>
+                `).join("")}
+            </div>
+
+            <div id="quizFeedback" class="quiz-feedback"></div>
+
+            <button
+                id="quizNextBtn"
+                class="quiz-next"
+                type="button">
+                Nästa fråga →
+            </button>
+        </div>
+    `;
+
+    progress.textContent = `Fråga ${quizIndex + 1} av ${list.length}`;
+
+    const rightCount = Object.values(quizResults).filter(v => v === "right").length;
+    const wrongCount = Object.values(quizResults).filter(v => v === "wrong").length;
+
+    remaining.textContent =
+        `✅ ${rightCount} rätt | ❌ ${wrongCount} fel | ${Object.keys(quizResults).length} besvarade`;
+
+    document.querySelectorAll(".quiz-option").forEach(button => {
+
+        button.addEventListener("click",()=>{
+            answerQuiz(button,item);
+        });
+
+    });
+
+    document.getElementById("quizNextBtn").addEventListener("click",()=>{
+        quizIndex++;
+        renderQuiz();
+    });
+
+}
+
+function answerQuiz(selectedButton,item){
+
+    if(quizAnswered){
+        return;
+    }
+
+    quizAnswered = true;
+
+    const correct = selectedButton.dataset.correct === "true";
+
+    quizResults[item.originalIndex] = correct ? "right" : "wrong";
+
+    document.querySelectorAll(".quiz-option").forEach(button => {
+
+        button.disabled = true;
+
+        if(button.dataset.correct === "true"){
+            button.classList.add("correct-answer");
+        }
+
+    });
+
+    if(!correct){
+        selectedButton.classList.add("wrong-answer");
+    }
+
+    const feedback = document.getElementById("quizFeedback");
+
+    if(correct){
+        feedback.textContent = "✅ Rätt svar!";
+        feedback.className = "quiz-feedback correct-feedback";
+    }else{
+        feedback.textContent = "❌ Fel svar! Det gröna alternativet är rätt.";
+        feedback.className = "quiz-feedback wrong-feedback";
+    }
+
+    document.getElementById("quizNextBtn").classList.add("show");
+
+}
+
+function quizPrevious(){
+
+    if(quizIndex > 0){
+        quizIndex--;
+        renderQuiz();
+    }
+
+}
+
+function quizToggleMark(){
+
+    const list = getQuizCards();
+
+    if(!list.length){
+        return;
+    }
+
+    const originalIndex = list[quizIndex].originalIndex;
+
+    if(isMarked(originalIndex)){
+        marked = marked.filter(item => item !== originalIndex);
+    }else{
+        marked.push(originalIndex);
+    }
+
+    saveMarked();
+    renderQuizCategories();
+    renderQuiz();
+
+}
+
+function quizRemoveCard(){
+
+    const list = getQuizCards();
+
+    if(!list.length){
+        return;
+    }
+
+    const originalIndex = list[quizIndex].originalIndex;
+
+    if(!removed.includes(originalIndex)){
+        removed.push(originalIndex);
+        saveRemoved();
+    }
+
+    const newList = getQuizCards();
+
+    if(quizIndex >= newList.length){
+        quizIndex = Math.max(0,newList.length - 1);
+    }
+
+    renderQuizCategories();
+    renderQuiz();
+
+}
+
+function quizResetCards(){
+
+    removed = [];
+    localStorage.removeItem(REMOVED_KEY);
+
+    quizIndex = 0;
+    quizList = null;
+    quizResults = {};
+    quizAnswered = false;
+
+    controls.style.display = "";
+    renderQuizCategories();
+    renderQuiz();
+
+}
+
+function showQuizResults(list){
+
+    controls.style.display = "none";
+
+    const answered = list.filter(item => quizResults[item.originalIndex]);
+    const right = answered.filter(item => quizResults[item.originalIndex] === "right");
+    const wrong = answered.filter(item => quizResults[item.originalIndex] === "wrong");
+    const total = answered.length;
+    const percentage = total ? Math.round((right.length / total) * 100) : 0;
+
+    progress.textContent = "🎉 Quizet är klart!";
+    remaining.textContent = `${right.length} rätt av ${total}`;
+
+    const rightHtml = right.length ? right.map(item => `
+        <div class="quiz-result-item">
+            <div class="quiz-result-question">${escapeHtml(item.card[1])}</div>
+            <div class="quiz-result-answer">${formatAnswer(item.card[2])}</div>
+        </div>
+    `).join("") : "<p>Inga rätt svar.</p>";
+
+    const wrongHtml = wrong.length ? wrong.map(item => `
+        <div class="quiz-result-item wrong-item">
+            <div class="quiz-result-question">${escapeHtml(item.card[1])}</div>
+            <div class="quiz-result-answer">Rätt svar: ${formatAnswer(item.card[2])}</div>
+        </div>
+    `).join("") : "<p>Inga fel svar 🎉</p>";
+
+    app.innerHTML = `
+        <div class="quiz-result">
+            <h2>🎉 Quizresultat</h2>
+
+            <div class="quiz-score">${percentage}%</div>
+
+            <div class="quiz-result-stats">
+                <div class="quiz-result-stat quiz-total">📚 ${total} besvarade</div>
+                <div class="quiz-result-stat quiz-right">✅ ${right.length} rätt</div>
+                <div class="quiz-result-stat quiz-wrong">❌ ${wrong.length} fel</div>
+            </div>
+
+            <div class="quiz-result-section">
+                <h3>✅ Rätt svar</h3>
+                ${rightHtml}
+            </div>
+
+            <div class="quiz-result-section">
+                <h3>❌ Fel svar</h3>
+                ${wrongHtml}
+            </div>
+
+            <div class="quiz-result-actions">
+                <button id="quizRepeatBtn" class="quiz-repeat" type="button">🔁 Gör om</button>
+                <button id="quizShuffleBtn" class="quiz-shuffle" type="button">🔀 Blanda</button>
+                ${wrong.length ? '<button id="quizWrongBtn" class="quiz-train-wrong" type="button">❌ Träna på fel</button>' : ''}
+                ${marked.filter(i => !removed.includes(i)).length ? '<button id="quizMarkedBtn" class="quiz-train-marked" type="button">⭐ Träna på markerade</button>' : ''}
+            </div>
+        </div>
+    `;
+
+    document.getElementById("quizRepeatBtn").addEventListener("click",()=>{
+        quizList = list.map(item => item.originalIndex);
+        quizIndex = 0;
+        quizResults = {};
+        quizAnswered = false;
+        controls.style.display = "";
+        renderQuiz();
+    });
+
+    document.getElementById("quizShuffleBtn").addEventListener("click",()=>{
+        quizList = shuffleArray(list.map(item => item.originalIndex));
+        quizIndex = 0;
+        quizResults = {};
+        quizAnswered = false;
+        controls.style.display = "";
+        renderQuiz();
+    });
+
+    if(wrong.length){
+        document.getElementById("quizWrongBtn").addEventListener("click",()=>{
+            quizList = shuffleArray(wrong.map(item => item.originalIndex));
+            quizIndex = 0;
+            quizResults = {};
+            quizAnswered = false;
+            controls.style.display = "";
+            renderQuiz();
+        });
+    }
+
+    const markedAvailable = marked.filter(i => !removed.includes(i));
+
+    if(markedAvailable.length){
+        document.getElementById("quizMarkedBtn").addEventListener("click",()=>{
+            activeCategory = "⭐ Markerade";
+            quizList = shuffleArray(markedAvailable);
+            quizIndex = 0;
+            quizResults = {};
+            quizAnswered = false;
+            controls.style.display = "";
+            renderQuizCategories();
+            renderQuiz();
+        });
+    }
+
+}
+
+flashcardModeBtn.addEventListener("click",()=>{
+
+    currentMode = "flashcards";
+    flashcardModeBtn.classList.add("active");
+    quizModeBtn.classList.remove("active");
+    quizList = null;
+    quizIndex = 0;
+    quizResults = {};
+    quizAnswered = false;
+    controls.style.display = "";
+    renderCategories();
+    render();
+
+});
+
+quizModeBtn.addEventListener("click",()=>{
+
+    currentMode = "quiz";
+    quizModeBtn.classList.add("active");
+    flashcardModeBtn.classList.remove("active");
+    quizList = null;
+    quizIndex = 0;
+    quizResults = {};
+    quizAnswered = false;
+    controls.style.display = "";
+    renderQuizCategories();
+    renderQuiz();
+
+});
+
+/* =========================
    KONTROLLER
 ========================= */
 
 prevBtn.addEventListener(
     "click",
-    previous
+    function(){
+        if(currentMode === "quiz"){
+            quizPrevious();
+        }else{
+            previous();
+        }
+    }
 );
 
 markBtn.addEventListener(
     "click",
-    toggleMark
+    function(){
+        if(currentMode === "quiz"){
+            quizToggleMark();
+        }else{
+            toggleMark();
+        }
+    }
 );
 
 removeBtn.addEventListener(
     "click",
-    removeCard
+    function(){
+        if(currentMode === "quiz"){
+            quizRemoveCard();
+        }else{
+            removeCard();
+        }
+    }
 );
 
 resetBtn.addEventListener(
     "click",
-    resetCards
+    function(){
+        if(currentMode === "quiz"){
+            quizResetCards();
+        }else{
+            resetCards();
+        }
+    }
 );
 
 
