@@ -1,0 +1,3174 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashcards – Tentaplugg</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f3f5f9;
+    color:#1f2937;
+}
+
+header{
+    background:#1d4ed8;
+    color:white;
+    padding:24px;
+    text-align:center;
+}
+
+header h1{
+    margin:0 0 8px;
+}
+
+.sub{
+    opacity:.9;
+}
+
+main{
+    max-width:900px;
+    margin:28px auto;
+    padding:0 18px;
+}
+
+.categories{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:22px;
+}
+
+button{
+    border:0;
+    border-radius:10px;
+    padding:12px 16px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:15px;
+}
+
+button:hover{
+    filter:brightness(.96);
+}
+
+.cat{
+    background:white;
+    color:#334155;
+    border:1px solid #dbe1ea;
+}
+
+.cat.active{
+    background:#2563eb;
+    color:white;
+}
+
+.stats{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    background:white;
+    padding:14px 18px;
+    border-radius:12px;
+    margin-bottom:18px;
+    box-shadow:0 2px 8px #00000010;
+    flex-wrap:wrap;
+}
+
+.card-wrap{
+    perspective:1200px;
+    height:430px;
+}
+
+.card{
+    position:relative;
+    width:100%;
+    height:100%;
+    transform-style:preserve-3d;
+    transition:.55s;
+    cursor:pointer;
+}
+
+.card.flipped{
+    transform:rotateY(180deg);
+}
+
+.face{
+    position:absolute;
+    inset:0;
+    backface-visibility:hidden;
+    background:white;
+    border-radius:20px;
+    padding:35px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    box-shadow:0 10px 30px #00000016;
+}
+
+.back{
+    transform:rotateY(180deg);
+    background:#eff6ff;
+}
+
+.label{
+    position:absolute;
+    top:20px;
+    left:22px;
+    font-size:13px;
+    font-weight:bold;
+    color:#64748b;
+}
+
+.face h2{
+    font-size:28px;
+    max-width:760px;
+}
+
+.answer{
+    font-size:22px;
+    line-height:1.55;
+    max-width:760px;
+}
+
+.hint{
+    position:absolute;
+    bottom:20px;
+    color:#64748b;
+    font-size:14px;
+}
+
+.controls{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+    flex-wrap:wrap;
+}
+
+.prev{
+    background:#e2e8f0;
+}
+
+.mark{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.mark.active{
+    background:#f59e0b;
+    color:#111827;
+}
+
+.remove{
+    background:#ef4444;
+    color:white;
+}
+
+.reset{
+    background:#334155;
+    color:white;
+}
+
+.correct{
+    background:#16a34a;
+    color:white;
+    font-size:18px;
+    padding:14px 22px;
+}
+
+.wrong{
+    background:#dc2626;
+    color:white;
+    font-size:18px;
+    padding:14px 22px;
+}
+
+.answer-buttons{
+    display:flex;
+    gap:12px;
+    margin-top:28px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.empty{
+    background:white;
+    border-radius:18px;
+    padding:50px;
+    text-align:center;
+    box-shadow:0 5px 20px #00000010;
+}
+
+.result{
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 10px 30px #00000012;
+}
+
+.result h2{
+    margin-top:0;
+    text-align:center;
+}
+
+.result-score{
+    text-align:center;
+    font-size:30px;
+    font-weight:800;
+    margin:20px 0;
+}
+
+.result-stats{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:25px;
+}
+
+.result-stat{
+    padding:14px 20px;
+    border-radius:12px;
+    font-weight:700;
+}
+
+.result-right{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.result-wrong{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.result-total{
+    background:#e0e7ff;
+    color:#3730a3;
+}
+
+.result-section{
+    margin-top:28px;
+}
+
+.result-section h3{
+    margin-bottom:12px;
+}
+
+.result-item{
+    background:#f8fafc;
+    border-left:5px solid #16a34a;
+    border-radius:10px;
+    padding:14px;
+    margin-bottom:10px;
+}
+
+.result-item.wrong-item{
+    border-left-color:#dc2626;
+}
+
+.result-question{
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.result-answer{
+    color:#475569;
+    line-height:1.5;
+}
+
+.result-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-top:30px;
+}
+
+.result-actions button{
+    font-size:16px;
+}
+
+.repeat{
+    background:#2563eb;
+    color:white;
+}
+
+.shuffle{
+    background:#7c3aed;
+    color:white;
+}
+
+.train-wrong{
+    background:#dc2626;
+    color:white;
+}
+
+.train-marked{
+    background:#f59e0b;
+    color:#111827;
+}
+
+@media(max-width:600px){
+    .card-wrap{
+        height:500px;
+    }
+
+    .face h2{
+        font-size:23px;
+    }
+
+    .answer{
+        font-size:18px;
+    }
+
+    .controls button{
+        flex:1;
+    }
+
+    .stats{
+        font-size:14px;
+    }
+
+    .result{
+        padding:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🧠 Tentaplugg – Flashcards</h1>
+    <div class="sub">Klicka på kortet för att vända det</div>
+</header>
+
+<main>
+
+<div id="categories" class="categories"></div>
+
+<div class="stats">
+    <span id="progress"></span>
+    <span id="remaining"></span>
+</div>
+
+<div id="app"></div>
+
+<div class="controls" id="controls">
+
+    <button class="prev" id="prevBtn" type="button">
+        ← Föregående
+    </button>
+
+    <button class="mark" id="markBtn" type="button">
+        ⭐ Markera
+    </button>
+
+    <button class="remove" id="removeBtn" type="button">
+        🗑 Ta bort
+    </button>
+
+    <button class="reset" id="resetBtn" type="button">
+        ↺ Återställ borttagna
+    </button>
+
+</div>
+
+</main>
+
+<script>
+
+const cards = [
+
+    [
+        "Immunförsvaret",
+        "Vad är immunförsvaret?",
+        "Immunförsvaret är kroppens eget försvar mot infektioner. Det skyddar mot bakterier, virus, svampar och parasiter."
+    ],
+
+    [
+        "Immunförsvaret",
+        "Vad är immunförsvarets viktigaste uppgift?",
+        "Att identifiera och bekämpa smittämnen så att kroppen kan förhindra eller begränsa en infektion."
+    ],
+
+    [
+        "Immunförsvaret",
+        "Vad består lymfsystemet av?",
+        "Lymfkörtlar, tonsiller (halsmandlar) och mjälte."
+    ],
+
+    [
+        "Immunförsvaret",
+        "Var finns lymfkörtlar?",
+        "Bland annat i halsen, armhålorna och ljumskarna."
+    ],
+
+    [
+        "Immunförsvaret",
+        "Vad gör lymfkörtlarna?",
+        "De fungerar som kroppens filterstationer och kan svullna vid infektion."
+    ],
+
+    [
+        "Immunförsvaret",
+        "Vad gör tonsillerna?",
+        "De hjälper till att fånga upp bakterier och virus som kommer in via mun och näsa."
+    ],
+
+    [
+        "Immunförsvaret",
+        "Vad gör mjälten?",
+        "Mjälten filtrerar blodet, tar bort gamla blodkroppar och hjälper immunförsvaret att bekämpa infektioner."
+    ],
+
+    [
+        "Immunförsvaret",
+        "Vilka är lymfsystemets viktigaste uppgifter?",
+        "Att filtrera bort bakterier och virus, innehålla lymfocyter, hjälpa kroppen att bekämpa infektioner och transportera vätska tillbaka till blodet."
+    ],
+
+    [
+        "Immunförsvaret",
+        "Vad är vita blodkroppar?",
+        "Celler som ingår i immunförsvaret och övervakar och skyddar kroppen mot infektioner."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vad består det ospecifika immunförsvaret av?",
+        "Det medfödda försvaret. Det reagerar snabbt och har inget minne av tidigare infektioner."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vad innebär att immunförsvaret är ospecifikt?",
+        "Det reagerar på samma sätt varje gång eftersom det inte har lärt sig att känna igen specifika tidigare sjukdomar."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vilka tre delar består det medfödda försvaret av?",
+        "Fysiska och kemiska hinder, identifiering av mikroorganismer och aktivering av vita blodkroppar samt inflammationssvar."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vilka är kroppens fysiska barriärer?",
+        "Huden, slemhinnorna och flimmerhåren."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Hur skyddar huden kroppen?",
+        "Huden hindrar bakterier, virus och andra smittämnen från att ta sig in i kroppen."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Hur skyddar slemhinnorna kroppen?",
+        "Slemmet fångar upp bakterier, virus och andra främmande partiklar."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Var finns slemhinnor?",
+        "Bland annat i luftvägarna och urinvägarna."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vad gör flimmerhåren?",
+        "De fångar upp och för bort bakterier, virus och andra partiklar genom exempelvis hosta och nysningar."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vilka är kroppens kemiska barriärer?",
+        "Bland annat magsyra, urin och normalflora."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Hur skyddar magsyran kroppen?",
+        "Det låga pH-värdet dödar många bakterier och virus som kommer ner i magen."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Hur skyddar urinen kroppen?",
+        "Urinen hjälper till att spola bort bakterier och det låga pH-värdet gör det svårare för bakterier att växa."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vad är normalflora?",
+        "Mikroorganismer som normalt finns på och i kroppen utan att orsaka sjukdom."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Hur skyddar normalfloran kroppen?",
+        "Den konkurrerar med skadliga bakterier och svampar om plats och näring och hindrar dem från att ta över."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Var finns mycket av kroppens normalflora?",
+        "Bland annat på huden och i tarmen."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vilka bakterier finns i tarmfloran?",
+        "E. coli, Klebsiella och enterokocker."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vilka bakterier finns i mun- och näsfloran?",
+        "Streptokocker, Staphylococcus aureus och laktobaciller."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vilka bakterier finns i hudfloran?",
+        "Koagulasnegativa stafylokocker (KNS) och Staphylococcus aureus."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vad kan granulocyter göra?",
+        "De kan fagocytera bakterier och främmande material, frisätta dödliga enzymer och exempelvis väteperoxid samt söka sig till områden med inflammation."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vad betyder fagocytera?",
+        "Att äta upp bakterier och främmande material."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vad är granulocyternas granula?",
+        "Korn som innehåller ämnen och enzymer som kan döda mikroorganismer."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vad kan granulocyter göra med sina granula?",
+        "De kan släppa ut dem som en slags kemisk bomb mot mikroorganismer."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vad är monocyter?",
+        "Monocyter är de största av de vita blodkropparna."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vad händer med monocyter när de lämnar blodet?",
+        "De vandrar ut i vävnaderna och omvandlas till makrofager."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Vad är en makrofag?",
+        "En storätande cell som äter upp exempelvis bakterier och tar hand om död vävnad."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Varför kallas makrofager för kroppens städpatrull?",
+        "För att de tar hand om inkräktare och död vävnad."
+    ],
+
+    [
+        "Ospecifika immunförsvaret",
+        "Hur länge kan makrofager leva?",
+        "De kan leva i flera år."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad består det specifika immunförsvaret av?",
+        "Lymfocyter och antikroppar. Lymfocyterna omfattar bland annat antikroppsproducerande celler, hjälparceller, mördarceller och minnesceller."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad gör en lymfocyt?",
+        "Lymfocyter bildas i benmärgen, mognar i lymfsystemet och har många olika uppgifter i immunförsvaret."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad är ett antigen?",
+        "Något som immunförsvaret reagerar på."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad kan vara ett antigen?",
+        "Exempelvis en del av en bakterie, en del av ett virus, pollen, ett läkemedel eller till och med en del av kroppen."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad är antikroppar?",
+        "Antikroppar produceras av lymfocyter och hjälper immunförsvaret att känna igen och bekämpa specifika smittämnen."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vilka olika typer av antikroppar nämns?",
+        "IgA och IgG. IgA utsöndras i slemhinnor och IgG är vanligast och räcker längst."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad hjälper antikroppar till med?",
+        "De underlättar fagocytos och hjälper immunförsvaret att känna igen och bekämpa smittämnen."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad händer när det specifika immunförsvaret utsätts för ett antigen?",
+        "Det kan bildas minnesceller."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad gör minnesceller?",
+        "De kommer ihåg tidigare smittämnen och gör att immunförsvaret kan reagera snabbare om samma smittämne kommer tillbaka."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad är vaccinering?",
+        "Vaccinering tränar immunförsvaret genom att använda hela eller delar av ett smittämne utan att orsaka sjukdom."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad är syftet med vaccin?",
+        "Att träna immunförsvaret och skapa minnesceller så att kroppen snabbare kan bekämpa samma smittämne i framtiden."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad är skillnaden mellan det ospecifika och specifika immunförsvaret?",
+        "Det ospecifika immunförsvaret reagerar snabbt och saknar minne. Det specifika immunförsvaret riktar sig mot ett specifikt smittämne, har minne och kan bilda antikroppar."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad gör B-celler?",
+        "De bildar antikroppar."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad gör T-celler?",
+        "De hjälper till med immunförsvaret och kan döda infekterade celler."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad gör T-hjälparceller?",
+        "De aktiverar andra försvarsceller och hjälper B-celler och T-celler att samarbeta."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad gör T-mördarceller?",
+        "De känner igen och dödar virusinfekterade celler."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad gör minnesceller?",
+        "De kommer ihåg tidigare infektioner och gör att kroppen kan reagera snabbare nästa gång samma smittämne kommer."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad är makrofagernas uppgift?",
+        "De äter upp bakterier, virus och döda celler och hjälper till att bekämpa infektioner."
+    ],
+
+    [
+        "Specifika immunförsvaret",
+        "Vad är granulocyternas uppgift?",
+        "De angriper bakterier och främmande ämnen, frisätter ämnen som dödar mikroorganismer och söker sig till områden med infektion och inflammation."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Vad är inflammation?",
+        "Kroppens varnings- och försvarsreaktion mot exempelvis en skada eller infektion."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Vilka är de fem tecknen på inflammation?",
+        "Rodnad (Rubor), värme (Color), svullnad (Tumor), smärta (Dolor) och nedsatt funktion (Functio lesa)."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Vad betyder rodnad vid inflammation?",
+        "Rodnad är ett tecken på inflammation."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Vad betyder svullnad vid inflammation?",
+        "Svullnad är ett av kroppens tecken på inflammation."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Vad händer vid en allergisk reaktion?",
+        "Immunförsvaret reagerar överdrivet på ett ämne som egentligen är ofarligt."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Vad kallas ämnet som utlöser en allergisk reaktion?",
+        "Allergen."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Nämn tre vanliga allergener.",
+        "Pollen, pälsdjur och kvalster."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Vilka symtom kan en allergisk reaktion ge?",
+        "Snuva, klåda, rinnande ögon och nysningar."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Vad är en autoimmun sjukdom?",
+        "En sjukdom där immunförsvaret angriper kroppens egna celler och vävnader."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Vad händer vid en autoimmun sjukdom?",
+        "Immunförsvaret kan inte skilja på kroppens egna celler och främmande ämnen, vilket leder till inflammation och skador i det organ eller den vävnad som angrips."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Nämn exempel på autoimmuna sjukdomar.",
+        "SLE, reumatoid artrit (RA), Sjögrens syndrom, diabetes typ 1, ledgångsreumatism, Crohns och glutenintolerans."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Vad påverkar SLE?",
+        "SLE kan påverka flera organ i kroppen."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Vad händer vid reumatoid artrit (RA)?",
+        "RA orsakar inflammation i lederna."
+    ],
+
+    [
+        "Inflammation och allergi",
+        "Vad angrips främst vid Sjögrens syndrom?",
+        "Framför allt saliv- och tårkörtlar."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Vad är mikrobiologi?",
+        "Läran om mikroorganismer, exempelvis bakterier, virus och svampar."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Vad är en bakterie?",
+        "En levande cell med egen ämnesomsättning."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Vad är ett virus?",
+        "Ett virus saknar egen ämnesomsättning och måste föröka sig i en värdcell."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Varför fungerar antibiotika mot bakterier men inte virus?",
+        "Antibiotika angriper bakteriers strukturer och funktioner. Virus saknar dessa och påverkas därför inte av antibiotika."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Hur kan bakterier skada kroppen?",
+        "De kan bilda toxiner (gifter) och enzymer som skadar kroppens vävnader."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Hur ligger stafylokocker?",
+        "De ligger i klasar."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Hur ligger streptokocker?",
+        "De ligger i kedjor."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Hur ligger diplokocker?",
+        "De ligger parvis."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Ge exempel på stavformade bakterier.",
+        "E. coli och Salmonella."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Ge exempel på skruvformade bakterier.",
+        "Spiroketer, exempelvis de som orsakar syfilis."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Vad är normalflora?",
+        "Mikroorganismer som normalt finns på och i kroppen utan att orsaka sjukdom."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Vad händer om balansen i normalfloran störs?",
+        "Sjukdomsframkallande mikroorganismer kan få övertaget."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Vad är kontamination?",
+        "En tillfällig förorening."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Vad är kolonisation?",
+        "När mikroorganismer etablerar sig utan att orsaka skada eller sjukdom."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Vad är en infektion?",
+        "När mikroorganismer orsakar skada eller sjukdom."
+    ],
+
+    [
+        "Mikrobiologi",
+        "Vad är skillnaden mellan kolonisation och infektion?",
+        "Vid kolonisation uppstår ingen sjukdom. Vid infektion leder mikroorganismerna till vävnadsskada eller symtom."
+    ],
+
+    [
+        "Smittspridning",
+        "Vilka tre smittvägar nämns?",
+        "Kontaktsmitta, droppsmitta och luftburen smitta."
+    ],
+
+    [
+        "Smittspridning",
+        "Vad är kontaktsmitta?",
+        "Smitta som sprids genom kontakt."
+    ],
+
+    [
+        "Smittspridning",
+        "Vad är direkt kontaktsmitta?",
+        "Smitta som sker genom fysisk kontakt mellan personer."
+    ],
+
+    [
+        "Smittspridning",
+        "Vad är indirekt kontaktsmitta?",
+        "Smitta som sker via exempelvis händer, instrument eller andra föremål."
+    ],
+
+    [
+        "Smittspridning",
+        "Vad är droppsmitta?",
+        "Smitta som sprids via större droppar som snabbt faller till marken."
+    ],
+
+    [
+        "Smittspridning",
+        "Vad är luftburen smitta?",
+        "Smitta som sprids via mycket små partiklar som kan sväva länge i luften."
+    ],
+
+    [
+        "Smittspridning",
+        "Vilken är den vanligaste vägen för smittspridning mellan patienter, personal och ytor?",
+        "Händerna."
+    ],
+
+    [
+        "Smittspridning",
+        "Vad är en vårdrelaterad infektion?",
+        "En infektion som uppkommer i samband med vård eller behandling, eller som personal får till följd av sitt arbete."
+    ],
+
+    [
+        "Smittspridning",
+        "Vilka personer kan vara extra infektionskänsliga?",
+        "Exempelvis personer med hög ålder, nedsatt immunförsvar, cytostatikabehandling, kirurgi eller inopererade proteser."
+    ],
+
+    [
+        "Smittspridning",
+        "Varför är vårdrelaterade infektioner ett problem?",
+        "De kan orsaka lidande, längre vårdtider, ökade kostnader och allvarliga komplikationer."
+    ],
+
+    [
+        "Smittspridning",
+        "Vad är antibiotikaresistenta bakterier?",
+        "Bakterier som är motståndskraftiga mot ett eller flera antibiotika."
+    ],
+
+    [
+        "Smittspridning",
+        "Varför är antibiotikaresistens ett problem?",
+        "Infektioner blir svårare att behandla och antibiotika riskerar att förlora sin effekt."
+    ],
+
+    [
+        "Smittspridning",
+        "Vad betyder bakteriemi?",
+        "Att bakterier finns i blodet."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Vad är syftet med basala hygienrutiner?",
+        "Att skydda patienter och personal, förebygga smittspridning och skapa en säker vårdmiljö."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Varför ska arbetskläder vara kortärmade?",
+        "För att underarmarna ska vara fria så att god hand- och underarmshygien kan utföras."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Hur ska arbetskläderna vara?",
+        "De ska vara kortärmade, tvättbara i 60 °C och bytas dagligen. De ska endast användas på arbetsplatsen."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Vilka skor är godkända enligt materialet?",
+        "Ergonomiska skor."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Hur ska huvudduk hanteras?",
+        "Den ska vara ren och bytas dagligen."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Vilka kläder är inte godkända?",
+        "Långärmad tröja under arbetskläderna och privat fleecejacka."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Är öppna sandaler godkända?",
+        "Nej."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Vilka smycken får inte bäras vid patientnära arbete?",
+        "Ringar, armband och klockor."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Varför får man inte bära ringar, armband eller klockor?",
+        "De kan samla mikroorganismer och försvåra korrekt handdesinfektion och rengöring."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Hur ska naglarna vara?",
+        "Kortklippta och utan nagellack, gelénaglar eller lösnaglar."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Varför får man inte använda nagellack, gelénaglar eller lösnaglar?",
+        "De försvårar rengöring av händerna och kan samla mikroorganismer."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Hur ska håret vara?",
+        "Uppsatt."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Hur ska skägget vara?",
+        "Välvårdat."
+    ],
+
+    [
+        "Basala hygienrutiner",
+        "Vad gäller för stark parfym?",
+        "Stark parfym ska undvikas."
+    ],
+
+    [
+        "Handhygien",
+        "Vilka delar av händerna ska rengöras vid handtvätt eller handdesinfektion?",
+        "Handflator, handryggar, mellan fingrarna, tummar, naglar/fingertoppar och handleder."
+    ],
+
+    [
+        "Handhygien",
+        "När ska händerna desinfekteras före patientkontakt?",
+        "Före patientkontakt och före rent arbete."
+    ],
+
+    [
+        "Handhygien",
+        "När ska händerna desinfekteras efter patientkontakt?",
+        "Efter patientkontakt, efter orent arbete och efter att handskar tagits av."
+    ],
+
+    [
+        "Handhygien",
+        "När ska händerna tvättas med tvål och vatten?",
+        "När händerna är synligt smutsiga eller känns kladdiga."
+    ],
+
+    [
+        "Handhygien",
+        "När ska tvål och vatten användas efter kontakt med kroppsvätskor?",
+        "Vid direktkontakt med kroppsvätskor som blod eller mycket saliv där mekanisk rengöring behövs först."
+    ],
+
+    [
+        "Handhygien",
+        "När kan handtvätt vara särskilt viktig vid smitta?",
+        "Vid misstanke om vissa typer av smitta, exempelvis vinterkräksjuka."
+    ],
+
+    [
+        "Handhygien",
+        "När räcker handdesinfektion?",
+        "Mellan olika behandlingsmoment och efter att handskar tagits av om händerna är rena."
+    ],
+
+    [
+        "Handhygien",
+        "Varför används alkoholbaserad handdesinfektion?",
+        "Den dödar bakterier och virus effektivt utan att slita på huden på samma sätt som tvål."
+    ],
+
+    [
+        "Handhygien",
+        "Vad är ett vanligt misstag vid handdesinfektion?",
+        "Att man missar delar av händerna, exempelvis tummar, fingertoppar eller mellan fingrarna."
+    ],
+
+    [
+        "Handhygien",
+        "Hur utför man korrekt handdesinfektion?",
+        "Ta tillräckligt med handdesinfektionsmedel. Gnid handflator, handryggar, mellan fingrarna, tummar, fingertoppar/naglar och handleder tills händerna är torra."
+    ],
+
+    [
+        "Handhygien",
+        "Varför räcker det inte att använda handskar?",
+        "Handskar ersätter inte handdesinfektion. Handskar kan bli kontaminerade och händerna ska desinfekteras efter att handskarna tagits av."
+    ],
+
+    [
+        "Skyddsutrustning",
+        "När ska handskar användas?",
+        "När det finns risk för kontakt med blod, saliv eller andra kroppsvätskor."
+    ],
+
+    [
+        "Skyddsutrustning",
+        "När används munskydd?",
+        "Vid risk för stänk."
+    ],
+
+    [
+        "Skyddsutrustning",
+        "Varför används visir?",
+        "För att skydda ögon och ansikte mot stänk."
+    ],
+
+    [
+        "Skyddsutrustning",
+        "När används förkläde?",
+        "När arbetskläderna behöver skyddas från att bli smutsiga eller kontaminerade."
+    ],
+
+    [
+        "Skyddsutrustning",
+        "När används hörselskydd?",
+        "Vid bullriga arbetsmoment."
+    ],
+
+    [
+        "Skyddsutrustning",
+        "Vad ska du göra om du upptäcker att du har en klocka på dig precis innan patientbehandling?",
+        "Ta av klockan och utför handdesinfektion innan patientarbetet påbörjas."
+    ],
+
+    [
+        "Skyddsutrustning",
+        "Vad ska du göra efter att du tagit av handskarna?",
+        "Kassera handskarna direkt och desinfektera händerna."
+    ],
+
+    [
+        "Skyddsutrustning",
+        "Vad ska du göra för att undvika kontaminering när du använder handskar?",
+        "Ta på och av handskarna på ett hygieniskt sätt och undvik att sprida kontamination."
+    ],
+
+    [
+        "Hygienfel",
+        "Varför är långärmad tröja under arbetskläderna ett hygienfel?",
+        "Ärmarna går ner över underarmarna och hindrar att underarmarna hålls fria vid vårdarbete."
+    ],
+
+    [
+        "Hygienfel",
+        "Varför är en klocka på handleden ett hygienfel?",
+        "Klockor får inte bäras vid patientnära arbete."
+    ],
+
+    [
+        "Hygienfel",
+        "Varför är en handledsortos/stöd ett hygienfel?",
+        "Den hindrar korrekt handhygien och rengöring."
+    ],
+
+    [
+        "Hygienfel",
+        "Varför kan ett stetoskop runt halsen vara ett hygienfel?",
+        "Smycken och utrustning runt halsen kan kontamineras och föra smitta vidare."
+    ],
+
+    [
+        "Hygienfel",
+        "Varför är hängande örhängen ett hygienfel?",
+        "Smycken ska inte bäras vid patientnära arbete."
+    ],
+
+    [
+        "Hygienfel",
+        "Varför är nagellack ett hygienfel?",
+        "Naglarna ska vara utan nagellack eftersom det kan försvåra rengöring."
+    ],
+
+    [
+        "Hygienfel",
+        "Varför kan en penna i bröstfickan vara ett hygienfel?",
+        "Föremål i arbetsdräktens övre del kan kontamineras och följa med mellan olika situationer."
+    ],
+
+    [
+        "Hygienfel",
+        "Varför är smutsiga eller fläckiga arbetsbyxor ett hygienfel?",
+        "Arbetskläderna ska vara rena och kontaminerade kläder kan bidra till smittspridning."
+    ],
+
+    [
+        "Hygienfel",
+        "Varför kan hängande nycklar eller andra föremål vara ett hygienfel?",
+        "De kan komma i kontakt med patienter eller arbetsytor och därmed föra smitta vidare."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vem beslutar om lagar?",
+        "Riksdagen."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad anger lagar?",
+        "De anger de övergripande kraven."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad gör föreskrifter?",
+        "De förtydligar hur lagarna ska följas och är bindande regler."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad är allmänna råd?",
+        "Rekommendationer som ger vägledning."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad är skillnaden mellan föreskrifter och allmänna råd?",
+        "Föreskrifter är bindande och måste följas. Allmänna råd är rekommendationer."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Varför finns regler om hygien och patientsäkerhet?",
+        "För att skydda patienter, förebygga smitta och skapa en säker vård."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Ska hygienrutiner anpassas efter om smittan är känd eller okänd?",
+        "Nej. Hygienrutiner och säkerhetsnivå ska inte anpassas efter om smittan är känd eller okänd."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Varför ska samma hygienrutiner användas?",
+        "Eftersom smittrisk kan finnas hos alla patienter."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Hur ska patienter behandlas?",
+        "Alla patienter ska behandlas lika och ha samma rätt till vård."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad ska patienten informera om i hälsodeklarationen?",
+        "Känd anmälningspliktig smitta."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Får vård nekas på grund av smittstatus?",
+        "Nej, vård får inte nekas på grund av smittstatus."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad ska du göra om någon vill behandla patienter olika på grund av smittstatus?",
+        "Uppmärksamma att det strider mot principen om lika vård och verksamhetens riktlinjer."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad innebär tystnadsplikt?",
+        "Att inte föra vidare information om patienters hälsa eller personliga förhållanden till obehöriga."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vilka uppgifter omfattas av tystnadsplikt och sekretess?",
+        "Uppgifter om patientens hälsotillstånd, behandlingar och smittstatus."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Får du prata med vem som helst om en patients hälsa?",
+        "Nej. Information om patienters hälsa omfattas av tystnadsplikt och sekretess."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vem får ta del av patientinformation?",
+        "Endast personal som deltar i vården och behöver informationen för behandlingen."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad gör smittskyddet?",
+        "Planerar, samordnar och följer upp smittskyddsarbetet samt ger råd och stöd."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad innebär att arbeta enligt aktuell kunskap?",
+        "Att använda aktuella kunskaper, säkra arbetsmetoder och arbetssätt som stöds av forskning och erfarenhet."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Varför behöver kunskaper och arbetssätt uppdateras?",
+        "Eftersom kunskaper, riktlinjer och arbetssätt förändras över tid."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad innebär professionell och säker vård?",
+        "Att ge säker, omsorgsfull och professionell vård samt följa hygienrutiner och gällande regelverk."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad är en vårdrelaterad infektion?",
+        "En infektion som uppkommer i samband med vård eller behandling."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad är ett system för att rapportera allvarliga vårdskador eller risk för allvarliga vårdskador?",
+        "Ett system för att rapportera sådana händelser och risker."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "När ska allvarliga vårdskador eller risker rapporteras?",
+        "När en patient har drabbats av eller riskerat att drabbas av en allvarlig vårdskada."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Varför är hygienrutiner viktiga för patientsäkerheten?",
+        "För att minska risken för smittspridning, infektioner och vårdskador."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad innebär spårbarhet av material?",
+        "Att man kan identifiera vilka material och produkter som har använts vid en behandling."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Varför är spårbarhet viktigt?",
+        "För att kunna följa upp, informera patienter och vidta åtgärder om ett material visar sig vara felaktigt."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Varför måste rengöring och sterilisering fungera korrekt?",
+        "För att säkerställa att rengöring och sterilisering fungerar korrekt och är säker."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Vad krävs för att använda utrustning säkert?",
+        "Rätt kompetens och att utrustningen används på ett säkert och korrekt sätt."
+    ],
+
+    [
+        "Regelverk och patientsäkerhet",
+        "Varför är rätt kompetens och säker utrustningsanvändning viktigt?",
+        "För att säkerställa kvalitet, patientsäkerhet och fungerande smittskydd."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är immunförsvarets uppgift?",
+        "Skydda kroppen mot infektioner."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är skillnaden mellan ospecifikt och specifikt immunförsvar?",
+        "Ospecifikt = snabbt och inget minne. Specifikt = riktat, minne och antikroppar."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är ett antigen?",
+        "Något som immunförsvaret reagerar på."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad gör antikroppar?",
+        "Känner igen specifika smittämnen och hjälper immunförsvaret att bekämpa dem."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad gör minnesceller?",
+        "Kommer ihåg smittämnen så att immunförsvaret kan reagera snabbare nästa gång."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är vaccinets funktion?",
+        "Att träna immunförsvaret och skapa minnesceller utan att orsaka sjukdom."
+    ],
+
+    [
+        "Snabbtest",
+        "Vilka är de fem tecknen på inflammation?",
+        "Rodnad, värme, svullnad, smärta och nedsatt funktion."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är en allergi?",
+        "När immunförsvaret överreagerar på ett ämne som egentligen är ofarligt."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är en autoimmun sjukdom?",
+        "När immunförsvaret angriper kroppens egna celler och vävnader."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är en bakterie?",
+        "En levande cell med egen ämnesomsättning."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är ett virus?",
+        "Det saknar egen ämnesomsättning och måste föröka sig i en värdcell."
+    ],
+
+    [
+        "Snabbtest",
+        "Fungerar antibiotika mot virus?",
+        "Nej."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är normalflora?",
+        "Mikroorganismer som normalt finns på och i kroppen utan att orsaka sjukdom."
+    ],
+
+    [
+        "Snabbtest",
+        "Vilka tre smittvägar ska du kunna?",
+        "Kontaktsmitta, droppsmitta och luftburen smitta."
+    ],
+
+    [
+        "Snabbtest",
+        "Vilken är den vanligaste vägen för smittspridning mellan patienter, personal och ytor?",
+        "Händerna."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är syftet med basala hygienrutiner?",
+        "Skydda patienter och personal samt förebygga smittspridning."
+    ],
+
+    [
+        "Snabbtest",
+        "Får man bära ringar vid patientnära arbete?",
+        "Nej."
+    ],
+
+    [
+        "Snabbtest",
+        "Får man bära klocka vid patientnära arbete?",
+        "Nej."
+    ],
+
+    [
+        "Snabbtest",
+        "Ska arbetskläder vara kortärmade?",
+        "Ja."
+    ],
+
+    [
+        "Snabbtest",
+        "Vilken temperatur ska arbetskläder kunna tvättas i enligt materialet?",
+        "60 °C."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är viktigast efter att handskar tagits av?",
+        "Handdesinfektion."
+    ],
+
+    [
+        "Snabbtest",
+        "När ska händerna tvättas med tvål och vatten?",
+        "När händerna är synligt smutsiga eller känns kladdiga samt i situationer där mekanisk rengöring behövs."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad används handskar till?",
+        "Vid risk för kontakt med blod, saliv eller andra kroppsvätskor."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad används visir till?",
+        "Skydda ögon och ansikte mot stänk."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad används munskydd till?",
+        "Vid risk för stänk och som skydd för mun och näsa enligt situationen."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad används förkläde till?",
+        "För att skydda arbetskläderna."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är tystnadsplikt?",
+        "Att inte föra vidare patienters hälsa eller personliga förhållanden till obehöriga."
+    ],
+
+    [
+        "Snabbtest",
+        "Får vård nekas på grund av smittstatus?",
+        "Nej."
+    ],
+
+    [
+        "Snabbtest",
+        "Vem får ta del av patientinformation?",
+        "Endast personal som deltar i vården och behöver informationen för behandlingen."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är skillnaden mellan kontamination, kolonisation och infektion?",
+        "Kontamination = tillfällig förorening. Kolonisation = mikroorganismer etablerar sig utan att orsaka skada. Infektion = mikroorganismer orsakar skada eller sjukdom."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad är antibiotikaresistens?",
+        "När bakterier är motståndskraftiga mot ett eller flera antibiotika."
+    ],
+
+    [
+        "Snabbtest",
+        "Vad betyder bakteriemi?",
+        "Att bakterier finns i blodet."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad består lymfsystemet av?",
+        "Lymfsystemet består av lymfkörtlar (vanligast i ljumskar, hals, armhålor), tonsiller (halsmandlar) och mjälte."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Lymfsystemets uppgifter",
+        "Rensa blodet från bakterier och virus. Plats för lymfocyter, en typ av vita blodkroppar, att mogna och dela sig. Transporterar vätska från vävnader tillbaka till blodet."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad gör immunförsvaret?",
+        "Immunförsvaret skyddar oss mot infektioner."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är immunförsvarets funktion?",
+        "Det bekämpar infektioner oavsett om de orsakas av bakterier eller virus."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad består det Ospecifika immunförsvaret utav?",
+        "Det medfödda försvaret, det reagerar snabbt men är alltså ospecifikt. Den här delen av immunförsvaret saknar minne av tidigare sjukdomar."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad består det medfödda försvaret utav?",
+        "Det medfödda försvaret består av tre delar: hinder som är fysiska eller kemiska; processen då olika mikroorganismer identifieras och vita blodkroppar aktiveras; samt ett inflammationssvar."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad hör till de fysiska barriärerna? Beskriv deras funktion",
+        "Till de fysiska barriärerna hör huden, slemhinnorna och flimmerhåren. Huden skyddar mot främmande bakterier och virus. Slem fångar upp bakterier, virus och andra främmande partiklar. Flimmerhåren kan fånga upp partiklar som sedan harklas, nyses eller hostas upp."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad består de kemiska barriärerna utav? Beskriv deras funktion",
+        "Saltsyra, urin och normalflora. Saltsyrans låga pH dödar de flesta mikroorganismer. Urinens låga pH gör det svårare för bakterier att trivas och bakterier kissas ut. Normalfloran konkurrerar med onda bakterier och svampar och hindrar dem från att ta över."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad kan de vita blodkroppar-granulocyter göra?",
+        "Kan äta upp (fagocytera) bakterier och främmande material. Har korn (granula) med dödliga enzymer och exempelvis väteperoxid. Kan släppa ut sina granula som en kemisk bomb. Kan röra sig mot områden med mycket inflammation."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Nämn de olika delarna i det vita blodkropparna och beskriv deras funktion.",
+        "Monocyterna är störst av de vita blodkropparna. De finns i blodet under ungefär ett dygn, vandrar sedan ut i vävnaderna och omvandlas till makrofager. Makrofager kan äta upp inkräktare och tar hand om död vävnad. De fungerar som en slags städpatrull och kan leva i flera år."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad består det Specifika immunförsvaret utav?",
+        "Lymfocyter: antikroppsproducerande, hjälparceller, mördarceller och minnesceller, samt antikroppar."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad gör en lymfocyt?",
+        "Bildas i benmärg, mognar i lymfsystemet och har många olika uppgifter i immunförsvaret."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är ett antigen?",
+        "Något som immunförsvaret reagerar på. Det kan vara en del av en bakterie, del av virus, allergen som pollen eller medicin, eller till och med en del av kroppen."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad för antikroppar?",
+        "Antikroppar produceras av lymfocyter. Det finns olika varianter, exempelvis IgA som utsöndras i slemhinnor och IgG som är vanligast och räcker längst. De underlättar fagocytos. Varje lymfocyt producerar olika sorters antikroppar."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad händer vid en Minnesceller och vaccinering?",
+        "Om det specifika immunförsvaret utsätts för ett antigen kan det skapa minnesceller. Minnescellerna ligger sedan och vilar och kan vid nästa stimulering reagera snabbare. Vaccinering är till exempel dött virus som stimulerar immunförsvaret, men inte ger sjukdom."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Hur kan man se en inflammation?",
+        "Rodnad (Rubor), värme (Color), smärta (Dolor), svullnad (Tumor) och nedsatt funktion (Functio lesa)."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad händer vid en allergisk reaktion?",
+        "Kroppen reagerar mot ett främmande ämne. Allergi uppstår när kroppens immunförsvar överreagerar på så kallade allergen, eller retande ämnen, i omgivningen."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är en autoimmun sjukdom? Beskriv några utav dem.",
+        "En autoimmun sjukdom uppstår när antikropparna angriper kroppens egen vävnad, vilket skapar inflammation. Ofta är det ett specifikt organ och vävnad som angrips. Exempel är SLE, glutenintolerans, diabetes typ 1, ledgångsreumatism, Crohns och Sjögrens syndrom."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Nämn de olika bakterierna i normal floran.",
+        "Tarmflora: E. coli, Klebsiella och Enterokocker. Mun- och näsflora: Streptokocker, Staphylococcus aureus och Laktobaciller. Hudflora: Koagulasnegativa stafylokocker (KNS) och Staphylococcus aureus."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är syftet med basala hygienrutiner?",
+        "Att skydda patienter och personal samt förebygga smittspridning."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför ska arbetskläder vara kortärmade?",
+        "För att underarmarna ska vara fria så att god hand- och underarmshygien kan utföras."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Nämn tre saker som inte får bäras på händer eller handleder vid patientnära arbete.",
+        "Ringar, armband och klockor."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vilka områden ska rengöras vid handtvätt eller handdesinfektion?",
+        "Handflator, handryggar, mellan fingrarna, tummar, naglar/fingertoppar och handleder."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "När ska händerna desinfekteras före patientkontakt?",
+        "Före patientkontakt och före rent arbete."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Nämn minst tre tillfällen då händerna ska desinfekteras efter patientkontakt.",
+        "Efter patientkontakt, efter orent arbete, efter att handskar tagits av och när händerna känns smutsiga."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför räcker det inte att använda handskar?",
+        "Handskar ersätter inte handdesinfektion. Händerna ska desinfekteras efter att handskarna tagits av."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "När ska händerna tvättas med tvål och vatten innan handdesinfektion används?",
+        "När händerna är synligt smutsiga eller känns smutsiga."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför får man inte använda nagellack, gelénaglar eller lösnaglar i patientnära arbete?",
+        "De försvårar rengöring av händerna och kan samla mikroorganismer."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "När ska handskar användas?",
+        "Vid risk för kontakt med blod, saliv eller andra kroppsvätskor."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Du upptäcker att du har klockan på dig precis innan du ska behandla en patient. Vad ska du göra?",
+        "Ta av klockan och utför handdesinfektion innan patientarbetet påbörjas."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vilket är ett vanligt misstag vid handdesinfektion som gör att den blir mindre effektiv?",
+        "Att man missar vissa delar av händerna, exempelvis tummar, fingertoppar eller mellan fingrarna."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför kan handskar aldrig ersätta god handhygien?",
+        "Handskar kan bli kontaminerade och skyddar inte om handhygien inte utförs före och efter användning."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Beskriv steg för steg hur du utför korrekt handdesinfektion.",
+        "1. Ta tillräckligt med handdesinfektionsmedel. 2. Gnid handflatorna mot varandra. 3. Gnid handryggarna. 4. Gnid mellan fingrarna. 5. Gnid tummarna. 6. Gnid fingertoppar och naglar. 7. Gnid handlederna. 8. Fortsätt tills händerna är torra."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför är basala hygienrutiner en viktig del av patientsäkerheten?",
+        "De minskar risken för smittspridning och skyddar både patienter och personal från infektioner."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Beskriv hur de basala hygienrutinerna ska följas från att du tar emot en patient tills behandlingen är avslutad och skyddsutrustningen ska kasseras.",
+        "1. Kontrollera arbetskläderna och att inga smycken eller klockor bärs. 2. Tvätta och desinfektera händerna före patientkontakt. 3. Ta på nödvändig skyddsutrustning. 4. Genomför behandlingen. 5. Ta av handskarna hygieniskt. 6. Kassera handskarna direkt. 7. Desinfektera händerna. 8. Ta av och kassera övrig engångsutrustning. 9. Utför handdesinfektion vid behov. 10. Rengör och desinfektera behandlingsrummet och transportera kontaminerat gods till sterilen innan nästa patient."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "När räcker handdesinfektion?",
+        "Mellan olika behandlingsmoment och efter att du tagit av dig skyddshandskar om händerna är rena. Alkoholbaserat medel dödar bakterier och virus effektivt utan att slita på huden på samma sätt som tvål."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "När måste du tvätta händerna med tvål och vatten?",
+        "Om händerna är synligt smutsiga eller känns kladdiga, om händerna har kommit i direktkontakt med kroppsvätskor som blod eller mycket saliv där mekanisk rengöring behövs först, samt vid misstanke om vissa typer av smitta, till exempel vinterkräksjuka."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är mikrobiologi?",
+        "Mikrobiologi är läran om mikroorganismer, exempelvis bakterier, virus och svampar."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är skillnaden mellan bakterier och virus?",
+        "Bakterier är levande celler med egen ämnesomsättning. Virus saknar egen ämnesomsättning och måste föröka sig i en värdcell."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför fungerar antibiotika mot bakterier men inte virus?",
+        "Antibiotika angriper bakteriers strukturer och funktioner. Virus saknar dessa och påverkas därför inte av antibiotika."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Hur kan bakterier skada kroppens vävnader?",
+        "Bakterier kan bilda toxiner (gifter) och enzymer som skadar kroppens vävnader."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Hur ligger stafylokocker, streptokocker och diplokocker?",
+        "Stafylokocker ligger i klasar, streptokocker i kedjor och diplokocker parvis."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Ge exempel på stavformade och skruvformade bakterier.",
+        "Exempel på stavformad bakterie är E. coli eller Salmonella. Exempel på skruvformad bakterie är spiroketer som orsakar syfilis."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är normalflora?",
+        "Normalflora är de mikroorganismer som normalt finns på och i kroppen utan att orsaka sjukdom."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Hur skyddar normalfloran kroppen?",
+        "Normalfloran skyddar genom att konkurrera med skadliga mikroorganismer om plats och näring."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad händer om balansen i normalfloran störs?",
+        "Balansen störs och sjukdomsframkallande mikroorganismer kan få övertaget."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är skillnaden mellan kontamination, kolonisation och infektion?",
+        "Kontamination är en tillfällig förorening. Kolonisation innebär att mikroorganismer etablerar sig utan att orsaka skada. Infektion innebär att mikroorganismer orsakar skada eller sjukdom."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är skillnaden mellan kolonisation och infektion?",
+        "Vid kolonisation uppstår ingen sjukdom, medan infektion leder till vävnadsskada eller symtom."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vilka tre smittvägar finns?",
+        "Kontaktsmitta, droppsmitta och luftburen smitta."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vilken är den vanligaste smittvägen?",
+        "Kontaktsmitta."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är skillnaden mellan direkt och indirekt kontaktsmitta?",
+        "Direkt kontaktsmitta sker genom fysisk kontakt mellan personer. Indirekt kontaktsmitta sker via händer, instrument eller andra föremål."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är skillnaden mellan droppsmitta och luftburen smitta?",
+        "Droppsmitta sprids via större droppar som snabbt faller till marken. Luftburen smitta sprids via mycket små partiklar som kan sväva länge i luften."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vilken är den vanligaste vägen för smittspridning mellan patienter, personal och ytor?",
+        "Händerna är den vanligaste vägen för smittspridning mellan patienter, personal och ytor."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är en vårdrelaterad infektion?",
+        "En infektion som uppkommer i samband med vård eller som personal får till följd av sitt arbete."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vilka patienter är extra infektionskänsliga?",
+        "Exempel: hög ålder, nedsatt immunförsvar, cytostatikabehandling, kirurgi eller inopererade proteser."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför är vårdrelaterade infektioner ett problem?",
+        "De orsakar lidande, längre vårdtider, ökade kostnader och kan leda till allvarliga komplikationer."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Hur ska arbetskläder hanteras?",
+        "Arbetskläder ska vara kortärmade, bytas dagligen och endast användas på arbetsplatsen."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför ska smycken, klockor och konstgjorda naglar undvikas?",
+        "De kan samla mikroorganismer och försvåra handdesinfektion."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "När ska handhygien utföras?",
+        "Omedelbart före och efter varje vårdmoment."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "När ska händerna tvättas?",
+        "När händerna är smutsiga eller efter kontakt med patient som har kräkningar eller diarré."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "När ska handskar användas?",
+        "När det finns risk för kontakt med kroppsvätskor som blod eller saliv."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är antibiotikaresistenta bakterier?",
+        "Bakterier som är motståndskraftiga mot ett eller flera antibiotika."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför är antibiotikaresistens ett problem?",
+        "Infektioner blir svårare att behandla och antibiotika riskerar att förlora sin effekt."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad betyder bakteriemi?",
+        "Bakteriemi innebär att bakterier finns i blodet."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad innebär att en patient är infektionskänslig?",
+        "Infektionskänsliga patienter har ökad risk att drabbas av allvarliga infektioner och komplikationer efter behandling."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vem beslutar om lagar och vad anger lagar, föreskrifter och allmänna råd?",
+        "Lagar beslutas av riksdagen och anger de övergripande kraven. Föreskrifter förtydligar hur lagarna ska följas och allmänna råd ger vägledning."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är skillnaden mellan föreskrifter och allmänna råd?",
+        "Föreskrifter är bindande regler som måste följas. Allmänna råd är rekommendationer."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför finns regler om hygien och patientsäkerhet?",
+        "För att skydda patienter, förebygga smitta och skapa en säker vård."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Ska hygienrutiner och säkerhetsnivå anpassas efter om smitta är känd eller okänd?",
+        "Hygienrutiner och säkerhetsnivå ska aldrig anpassas efter om smitta är känd eller okänd."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför ska samma hygienrutiner användas?",
+        "Eftersom smittrisk kan finnas hos alla patienter."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Hur ska patienter behandlas?",
+        "Alla patienter ska behandlas lika och ha samma rätt till vård."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad ska patienten informera om i hälsodeklarationen?",
+        "Patienten ska informera om känd anmälningspliktig smitta i hälsodeklarationen."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Får vård nekas på grund av smittstatus?",
+        "Nej, vård får inte nekas på grund av smittstatus."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad ska du göra om någon vill behandla patienter olika på grund av smittstatus?",
+        "Uppmärksamma att det strider mot principen om lika vård och verksamhetens riktlinjer."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad innebär tystnadsplikt?",
+        "Att inte föra vidare information om patienters hälsa eller personliga förhållanden till obehöriga."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vilka uppgifter omfattas av tystnadsplikt och sekretess?",
+        "Uppgifter om patientens hälsotillstånd, behandlingar och smittstatus."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Får du prata med vem som helst om en patients hälsa?",
+        "Nej. Information om patienters hälsa omfattas av tystnadsplikt och sekretess."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vem får ta del av patientinformation?",
+        "Endast personal som deltar i vården och behöver informationen för behandlingen."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad gör smittskyddet?",
+        "Att planera, samordna och följa upp smittskyddsarbetet samt ge råd och stöd vid frågor."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad innebär att arbeta enligt aktuell kunskap?",
+        "Att använda aktuella kunskaper, säkra arbetsmetoder och arbetssätt som stöds av forskning och erfarenhet."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför behöver kunskaper och arbetssätt uppdateras?",
+        "För att kunskaper, riktlinjer och arbetssätt förändras över tid."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad innebär professionell och säker vård?",
+        "Att ge säker, omsorgsfull och professionell vård samt följa hygienrutiner och gällande regelverk."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är en vårdrelaterad infektion?",
+        "En infektion som uppkommer i samband med vård eller behandling."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad är ett system för att rapportera allvarliga vårdskador eller risk för allvarliga vårdskador?",
+        "Ett system för att rapportera allvarliga vårdskador eller risk för allvarliga vårdskador."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "När ska allvarliga vårdskador eller risker rapporteras?",
+        "När en patient har drabbats av eller riskerat att drabbas av en allvarlig vårdskada."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför är hygienrutiner viktiga för patientsäkerheten?",
+        "För att minska risken för smittspridning, infektioner och vårdskador."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad innebär spårbarhet av material?",
+        "Att man kan identifiera vilka material och produkter som har använts vid en behandling."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför är spårbarhet viktigt?",
+        "För att kunna följa upp, informera patienter och vidta åtgärder om ett material visar sig vara felaktigt."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför måste rengöring och sterilisering fungera korrekt?",
+        "För att säkerställa att rengöring och sterilisering fungerar korrekt och är säker."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Vad krävs för att använda utrustning säkert?",
+        "Att ha rätt kompetens och använda utrustningen på ett säkert och korrekt sätt."
+    ],
+
+    [
+        "Endast frågor från Worddokument",
+        "Varför är rätt kompetens och säker utrustningsanvändning viktigt?",
+        "För att säkerställa kvalitet, patientsäkerhet och fungerande smittskydd."
+    ]
+
+];
+
+(function(){
+
+"use strict";
+
+const REMOVED_KEY = "flashRemoved_v2";
+const MARKED_KEY = "flashMarked_v1";
+
+let activeCategory = "Alla";
+let index = 0;
+
+let removed = JSON.parse(
+    localStorage.getItem(REMOVED_KEY) || "[]"
+);
+
+let marked = JSON.parse(
+    localStorage.getItem(MARKED_KEY) || "[]"
+);
+
+let results = {};
+let customList = null;
+let roundStarted = false;
+
+const categoriesElement =
+    document.getElementById("categories");
+
+const app =
+    document.getElementById("app");
+
+const progress =
+    document.getElementById("progress");
+
+const remaining =
+    document.getElementById("remaining");
+
+const controls =
+    document.getElementById("controls");
+
+const prevBtn =
+    document.getElementById("prevBtn");
+
+const markBtn =
+    document.getElementById("markBtn");
+
+const removeBtn =
+    document.getElementById("removeBtn");
+
+const resetBtn =
+    document.getElementById("resetBtn");
+
+
+/* =========================
+   HJÄLPFUNKTIONER
+========================= */
+
+function escapeHtml(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+function formatAnswer(value){
+
+    return escapeHtml(value)
+        .replace(/\n/g,"<br>");
+
+}
+
+function saveMarked(){
+
+    localStorage.setItem(
+        MARKED_KEY,
+        JSON.stringify(marked)
+    );
+
+}
+
+function saveRemoved(){
+
+    localStorage.setItem(
+        REMOVED_KEY,
+        JSON.stringify(removed)
+    );
+
+}
+
+function isMarked(originalIndex){
+
+    return marked.includes(originalIndex);
+
+}
+
+function getCategories(){
+
+    return [
+        "Alla",
+        "⭐ Markerade",
+        ...new Set(cards.map(card => card[0]))
+    ];
+
+}
+
+
+/* =========================
+   HÄMTA TILLGÄNGLIGA KORT
+========================= */
+
+function getAvailableCards(){
+
+    let list = cards
+        .map((card,originalIndex)=>({
+            card,
+            originalIndex
+        }))
+        .filter(item => {
+
+            if(
+                removed.includes(item.originalIndex)
+            ){
+                return false;
+            }
+
+            if(
+                activeCategory === "⭐ Markerade"
+            ){
+                return isMarked(item.originalIndex);
+            }
+
+            if(
+                activeCategory === "Alla"
+            ){
+                return item.card[0] !==
+                    "Endast frågor från Worddokument";
+            }
+
+            return item.card[0] === activeCategory;
+
+        });
+
+    if(customList !== null){
+
+        const allowed =
+            new Set(customList);
+
+        list = list.filter(item =>
+            allowed.has(item.originalIndex)
+        );
+
+    }
+
+    return list;
+
+}
+
+
+/* =========================
+   KATEGORIER
+========================= */
+
+function renderCategories(){
+
+    categoriesElement.innerHTML = "";
+
+    getCategories().forEach(category => {
+
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+
+        button.className =
+            "cat" +
+            (
+                category === activeCategory
+                    ? " active"
+                    : ""
+            );
+
+        button.textContent = category;
+
+        button.addEventListener("click",()=>{
+
+            activeCategory = category;
+
+            customList = null;
+
+            index = 0;
+
+            results = {};
+
+            roundStarted = false;
+
+            renderCategories();
+            render();
+
+        });
+
+        categoriesElement.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================
+   STATISTIK
+========================= */
+
+function updateStats(list){
+
+    if(!list.length){
+
+        progress.textContent = "Klart!";
+
+        remaining.textContent =
+            "0 kort kvar";
+
+        return;
+
+    }
+
+    progress.textContent =
+        `Kort ${index + 1} av ${list.length}`;
+
+    const right =
+        Object.values(results)
+            .filter(value => value === "right")
+            .length;
+
+    const wrong =
+        Object.values(results)
+            .filter(value => value === "wrong")
+            .length;
+
+    const markedCount =
+        marked.filter(
+            item => !removed.includes(item)
+        ).length;
+
+    remaining.textContent =
+        `✅ ${right} rätt | ❌ ${wrong} fel | ⭐ ${markedCount} markerade`;
+
+}
+
+
+/* =========================
+   VISA KORT
+========================= */
+
+function render(){
+
+    const list =
+        getAvailableCards();
+
+    if(!list.length){
+
+        app.innerHTML = `
+            <div class="empty">
+
+                <h2>
+                    ${
+                        activeCategory === "⭐ Markerade"
+                            ? "Inga markerade kort ⭐"
+                            : "Inga kort kvar 🎉"
+                    }
+                </h2>
+
+                <p>
+                    ${
+                        activeCategory === "⭐ Markerade"
+                            ? "Markera några frågor så visas de här."
+                            : "Återställ borttagna kort eller välj en annan kategori."
+                    }
+                </p>
+
+            </div>
+        `;
+
+        updateStats([]);
+
+        return;
+
+    }
+
+    if(index >= list.length){
+        index = 0;
+    }
+
+    if(index < 0){
+        index = list.length - 1;
+    }
+
+    const item =
+        list[index];
+
+    const card =
+        item.card;
+
+    const originalIndex =
+        item.originalIndex;
+
+    const category =
+        card[0];
+
+    const question =
+        card[1];
+
+    const answer =
+        card[2];
+
+    const markedNow =
+        isMarked(originalIndex);
+
+    app.innerHTML = `
+
+        <div class="card-wrap">
+
+            <div class="card" id="card">
+
+                <div class="face">
+
+                    <div class="label">
+                        ${escapeHtml(category)}
+                    </div>
+
+                    <h2>
+                        ${escapeHtml(question)}
+                    </h2>
+
+                    <div class="hint">
+                        Klicka på kortet för att se svaret
+                    </div>
+
+                </div>
+
+                <div class="face back">
+
+                    <div class="label">
+                        ${escapeHtml(category)} – Svar
+                    </div>
+
+                    <div class="answer">
+                        ${formatAnswer(answer)}
+                    </div>
+
+                    <div class="answer-buttons">
+
+                        <button
+                            class="wrong"
+                            id="wrongBtn"
+                            type="button">
+                            ❌ Fel
+                        </button>
+
+                        <button
+                            class="correct"
+                            id="correctBtn"
+                            type="button">
+                            ✅ Rätt
+                        </button>
+
+                    </div>
+
+                    <div class="hint">
+                        Klicka på kortet för att vända tillbaka
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+    const cardElement =
+        document.getElementById("card");
+
+    cardElement.addEventListener(
+        "click",
+        function(){
+
+            cardElement.classList.toggle(
+                "flipped"
+            );
+
+        }
+    );
+
+    document
+        .getElementById("correctBtn")
+        .addEventListener(
+            "click",
+            function(event){
+
+                event.stopPropagation();
+
+                answerQuestion(
+                    "right"
+                );
+
+            }
+        );
+
+    document
+        .getElementById("wrongBtn")
+        .addEventListener(
+            "click",
+            function(event){
+
+                event.stopPropagation();
+
+                answerQuestion(
+                    "wrong"
+                );
+
+            }
+        );
+
+
+    markBtn.textContent =
+        markedNow
+            ? "⭐ Avmarkera"
+            : "⭐ Markera";
+
+    markBtn.classList.toggle(
+        "active",
+        markedNow
+    );
+
+    updateStats(list);
+
+}
+
+
+/* =========================
+   SVARA
+========================= */
+
+function answerQuestion(type){
+
+    const list =
+        getAvailableCards();
+
+    if(!list.length){
+        return;
+    }
+
+    const originalIndex =
+        list[index].originalIndex;
+
+    results[originalIndex] =
+        type;
+
+    roundStarted = true;
+
+    index++;
+
+    if(index >= list.length){
+
+        showResults(list);
+
+        return;
+
+    }
+
+    render();
+
+}
+
+
+/* =========================
+   FÖREGÅENDE
+========================= */
+
+function previous(){
+
+    const list =
+        getAvailableCards();
+
+    if(!list.length){
+        return;
+    }
+
+    index--;
+
+    if(index < 0){
+        index = list.length - 1;
+    }
+
+    render();
+
+}
+
+
+/* =========================
+   MARKERA
+========================= */
+
+function toggleMark(){
+
+    const list =
+        getAvailableCards();
+
+    if(!list.length){
+        return;
+    }
+
+    const originalIndex =
+        list[index].originalIndex;
+
+    if(isMarked(originalIndex)){
+
+        marked =
+            marked.filter(
+                item => item !== originalIndex
+            );
+
+    }else{
+
+        marked.push(originalIndex);
+
+    }
+
+    saveMarked();
+
+    /*
+       Om vi befinner oss i ⭐ Markerade
+       och tar bort markeringen försvinner
+       frågan automatiskt ur kategorin.
+    */
+
+    if(activeCategory === "⭐ Markerade"){
+
+        const newList =
+            getAvailableCards();
+
+        if(index >= newList.length){
+
+            index =
+                Math.max(0,newList.length - 1);
+
+        }
+
+    }
+
+    render();
+
+}
+
+
+/* =========================
+   TA BORT
+========================= */
+
+function removeCard(){
+
+    const list =
+        getAvailableCards();
+
+    if(!list.length){
+        return;
+    }
+
+    const originalIndex =
+        list[index].originalIndex;
+
+    if(!removed.includes(originalIndex)){
+
+        removed.push(originalIndex);
+
+        saveRemoved();
+
+    }
+
+    /*
+       ⭐-markeringen lämnas kvar.
+       Om kortet återställs kommer markeringen
+       därför fortfarande finnas.
+    */
+
+    const newList =
+        getAvailableCards();
+
+    if(index >= newList.length){
+
+        index =
+            Math.max(0,newList.length - 1);
+
+    }
+
+    render();
+
+}
+
+
+/* =========================
+   ÅTERSTÄLL BORTTAGNA
+========================= */
+
+function resetCards(){
+
+    removed = [];
+
+    localStorage.removeItem(
+        REMOVED_KEY
+    );
+
+    /*
+       OBS:
+       Vi rör INTE marked.
+       ⭐-markeringarna finns kvar.
+    */
+
+    index = 0;
+
+    results = {};
+
+    render();
+
+}
+
+
+/* =========================
+   BLANDA
+========================= */
+
+function shuffleArray(array){
+
+    const arr =
+        [...array];
+
+    for(
+        let i = arr.length - 1;
+        i > 0;
+        i--
+    ){
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+        [
+            arr[i],
+            arr[j]
+        ] = [
+            arr[j],
+            arr[i]
+        ];
+
+    }
+
+    return arr;
+
+}
+
+
+/* =========================
+   STARTA NY OMGÅNG
+========================= */
+
+function startRound(list){
+
+    customList =
+        [...list];
+
+    index = 0;
+
+    results = {};
+
+    roundStarted = true;
+
+    render();
+
+}
+
+
+/* =========================
+   RESULTATSIDA
+========================= */
+
+function showResults(list){
+
+    controls.style.display =
+        "none";
+
+    progress.textContent =
+        "🎉 Träningen är klar!";
+
+    remaining.textContent =
+        "";
+
+    const answered =
+        list.filter(
+            item =>
+                results[item.originalIndex]
+        );
+
+    const right =
+        answered.filter(
+            item =>
+                results[item.originalIndex] ===
+                "right"
+        );
+
+    const wrong =
+        answered.filter(
+            item =>
+                results[item.originalIndex] ===
+                "wrong"
+        );
+
+    const total =
+        answered.length;
+
+    const percentage =
+        total
+            ? Math.round(
+                (right.length / total) * 100
+              )
+            : 0;
+
+
+    let rightHtml = "";
+
+    if(right.length){
+
+        rightHtml =
+            right.map(item => `
+
+                <div class="result-item">
+
+                    <div class="result-question">
+                        ${escapeHtml(item.card[1])}
+                    </div>
+
+                    <div class="result-answer">
+                        ${formatAnswer(item.card[2])}
+                    </div>
+
+                </div>
+
+            `).join("");
+
+    }else{
+
+        rightHtml =
+            `<p>Inga rätt svar ännu.</p>`;
+
+    }
+
+
+    let wrongHtml = "";
+
+    if(wrong.length){
+
+        wrongHtml =
+            wrong.map(item => `
+
+                <div class="result-item wrong-item">
+
+                    <div class="result-question">
+                        ${escapeHtml(item.card[1])}
+                    </div>
+
+                    <div class="result-answer">
+                        ${formatAnswer(item.card[2])}
+                    </div>
+
+                </div>
+
+            `).join("");
+
+    }else{
+
+        wrongHtml =
+            `<p>Inga fel svar 🎉</p>`;
+
+    }
+
+
+    app.innerHTML = `
+
+        <div class="result">
+
+            <h2>
+                🎉 Resultat
+            </h2>
+
+            <div class="result-score">
+                ${percentage}%
+            </div>
+
+            <div class="result-stats">
+
+                <div class="result-stat result-total">
+                    📚 ${total} besvarade
+                </div>
+
+                <div class="result-stat result-right">
+                    ✅ ${right.length} rätt
+                </div>
+
+                <div class="result-stat result-wrong">
+                    ❌ ${wrong.length} fel
+                </div>
+
+            </div>
+
+
+            <div class="result-section">
+
+                <h3>
+                    ✅ Rätt svar
+                </h3>
+
+                ${rightHtml}
+
+            </div>
+
+
+            <div class="result-section">
+
+                <h3>
+                    ❌ Fel svar
+                </h3>
+
+                ${wrongHtml}
+
+            </div>
+
+
+            <div class="result-actions">
+
+                <button
+                    class="repeat"
+                    id="repeatBtn"
+                    type="button">
+                    🔁 Gör om
+                </button>
+
+                <button
+                    class="shuffle"
+                    id="shuffleBtn"
+                    type="button">
+                    🔀 Blanda
+                </button>
+
+                ${
+                    wrong.length
+                    ? `
+                    <button
+                        class="train-wrong"
+                        id="trainWrongBtn"
+                        type="button">
+                        ❌ Träna på fel
+                    </button>
+                    `
+                    : ""
+                }
+
+                ${
+                    marked.length
+                    ? `
+                    <button
+                        class="train-marked"
+                        id="trainMarkedBtn"
+                        type="button">
+                        ⭐ Träna på markerade
+                    </button>
+                    `
+                    : ""
+                }
+
+            </div>
+
+        </div>
+    `;
+
+
+    document
+        .getElementById("repeatBtn")
+        .addEventListener(
+            "click",
+            function(){
+
+                startRound(
+                    list.map(
+                        item =>
+                            item.originalIndex
+                    )
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById("shuffleBtn")
+        .addEventListener(
+            "click",
+            function(){
+
+                const shuffled =
+                    shuffleArray(
+                        list.map(
+                            item =>
+                                item.originalIndex
+                        )
+                    );
+
+                startRound(shuffled);
+
+            }
+        );
+
+
+    if(wrong.length){
+
+        document
+            .getElementById("trainWrongBtn")
+            .addEventListener(
+                "click",
+                function(){
+
+                    const wrongIndexes =
+                        wrong.map(
+                            item =>
+                                item.originalIndex
+                        );
+
+                    startRound(
+                        shuffleArray(
+                            wrongIndexes
+                        )
+                    );
+
+                }
+            );
+
+    }
+
+
+    if(marked.length){
+
+        document
+            .getElementById("trainMarkedBtn")
+            .addEventListener(
+                "click",
+                function(){
+
+                    const markedIndexes =
+                        cards
+                            .map(
+                                (card,i)=>i
+                            )
+                            .filter(
+                                i =>
+                                    marked.includes(i) &&
+                                    !removed.includes(i)
+                            );
+
+                    if(!markedIndexes.length){
+
+                        alert(
+                            "Du har inga markerade kort kvar."
+                        );
+
+                        return;
+
+                    }
+
+                    activeCategory =
+                        "⭐ Markerade";
+
+                    customList =
+                        shuffleArray(
+                            markedIndexes
+                        );
+
+                    index = 0;
+
+                    results = {};
+
+                    renderCategories();
+                    render();
+
+                }
+            );
+
+    }
+
+}
+
+
+/* =========================
+   KONTROLLER
+========================= */
+
+prevBtn.addEventListener(
+    "click",
+    previous
+);
+
+markBtn.addEventListener(
+    "click",
+    toggleMark
+);
+
+removeBtn.addEventListener(
+    "click",
+    removeCard
+);
+
+resetBtn.addEventListener(
+    "click",
+    resetCards
+);
+
+
+/* =========================
+   START
+========================= */
+
+renderCategories();
+
+render();
+
+})();
+</script>
+
+</body>
+</html>
